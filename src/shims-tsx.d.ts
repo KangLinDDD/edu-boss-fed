@@ -1,5 +1,5 @@
 import Vue, { VNode } from 'vue'
-
+// 支持以 .tsc结尾的文件，在vue项目中编写jsx代码
 declare global {
   namespace JSX {
     // tslint:disable no-empty-interface
