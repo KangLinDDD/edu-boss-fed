@@ -1,0 +1,5 @@
+{
+    "space-in-parens": [
+        0, "never"
+    ]
+}
