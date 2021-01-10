@@ -1,15 +1,14 @@
 <template>
-    <div class="course">
-        课程管理
-    </div>
+  <div class="notFound">Not Found</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-    name: 'Course'
+    name: '404'
 })
 </script>
 
-<style lang="scss" scoped>
+<style>
+
 </style>

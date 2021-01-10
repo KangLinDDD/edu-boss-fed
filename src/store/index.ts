@@ -4,12 +4,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
+    state: {
+        user: JSON.parse(window.localStorage.getItem('user') || 'null') // 当前登录用户状态
+    },
+    mutations: {
+        // 修改容器数据必须使用mutations
+        setUser (state, payload) {
+            state.user = JSON.parse(payload)
+            window.localStorage.setItem('user', payload)
+        }
+    },
+    actions: {
+    },
+    modules: {
+    }
 })
