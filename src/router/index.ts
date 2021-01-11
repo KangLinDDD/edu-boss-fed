@@ -89,6 +89,14 @@ const routes: Array<RouteConfig> = [
                     )
             },
             {
+                path: '/course/create',
+                name: 'add-course',
+                component: () =>
+                    import(
+                        /* webpackChunkName: 'add-course' */ '@/views/course/add.vue'
+                    )
+            },
+            {
                 path: '/advert-space',
                 name: 'advertSpace',
                 component: () =>

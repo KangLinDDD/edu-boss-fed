@@ -39,7 +39,8 @@ export default Vue.extend({
         loadUserInfo () {
             getUserInfo().then((res: any) => {
                 const { data } = res
-                if (data.code === '000000') {
+                if (data.state === 1) {
+                    console.log('aaa')
                     this.userInfo = data.content
                 }
             }).catch((e: any) => {
