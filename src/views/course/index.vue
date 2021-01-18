@@ -9,7 +9,8 @@
                          label-width="80">
                     <el-form-item :label="'课程名称'">
                         <el-input v-model="form.courseName"
-                                  placeholder="课程内容"></el-input>
+                                  @keyup.enter.native="search"
+                                  placeholder="课程名称"></el-input>
                     </el-form-item>
                     <el-form-item :label="'状态'">
                         <el-select v-model="form.status">
@@ -57,9 +58,11 @@
                                    :type="scope.row.status === 1 ? 'danger' : 'success'"
                                    @click="changeState(scope.row)">{{scope.row.status === 1 ? '下架' : '上架'}}</el-button>
                         <el-button size="mini"
-                                   type="default">编辑</el-button>
+                                   type="default"
+                                   @click="edit(scope.row.id, scope.row.courseName)">编辑</el-button>
                         <el-button size="mini"
-                                   type="default">内容管理</el-button>
+                                   type="default"
+                                   @click="section(scope.row.id, scope.row.courseName)">内容管理</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -189,6 +192,33 @@ export default Vue.extend({
         add () {
             this.$router.push({
                 name: 'add-course'
+            })
+        },
+        /**
+         * @description 编辑
+         * @param {String} courseId 课程id
+         * @return {*}
+         */
+        edit (courseId: string) {
+            this.$router.push({
+                name: 'edit-course',
+                params: {
+                    courseId: courseId
+                }
+            })
+        },
+        /**
+         * @description 内容管理
+         * @param {Number||String} courseId 课程id
+         * @return {*}
+         */
+        section (courseId: string, courseName: string) {
+            this.$router.push({
+                name: 'course-section',
+                params: {
+                    courseId: courseId,
+                    courseName
+                }
             })
         }
     }

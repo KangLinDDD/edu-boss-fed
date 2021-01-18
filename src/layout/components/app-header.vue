@@ -40,7 +40,6 @@ export default Vue.extend({
             getUserInfo().then((res: any) => {
                 const { data } = res
                 if (data.state === 1) {
-                    console.log('aaa')
                     this.userInfo = data.content
                 }
             }).catch((e: any) => {

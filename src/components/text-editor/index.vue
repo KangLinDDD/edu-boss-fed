@@ -24,7 +24,6 @@ export default Vue.extend({
             const editor = new E(this.$refs['text-editor'] as any)
             // 监听事件必须写在创建之前
             editor.config.onchange = (value: any) => {
-                console.log('change 之后最新的 html', value)
                 this.$emit('input', value)
             }
             // 创建编辑器

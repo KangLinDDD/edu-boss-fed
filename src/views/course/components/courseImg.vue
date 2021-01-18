@@ -46,7 +46,6 @@ export default Vue.extend({
     methods: {
         handleAvatarSuccess (res: any, file: any) {
             this.imageUrl = URL.createObjectURL(file.raw)
-            console.log(res, file)
         },
         beforeAvatarUpload (file: any) {
             const isJPG = file.type === 'image/jpeg'
@@ -75,6 +74,8 @@ export default Vue.extend({
                 if (data.code === '000000') {
                     this.$emit('input', data.data.name)
                     this.$message.success('上传成功')
+                } else {
+                    this.$message.error(data.mesg)
                 }
                 this.isUploading = false
                 this.percentage = 0

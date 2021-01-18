@@ -97,6 +97,33 @@ const routes: Array<RouteConfig> = [
                     )
             },
             {
+                path: '/course/:courseId/edit',
+                name: 'edit-course',
+                component: () =>
+                    import(
+                        /* webpackChunkName: 'edit-course' */ '@/views/course/edit.vue'
+                    ),
+                props: true
+            },
+            {
+                path: '/course/:courseId/section/:courseName',
+                name: 'course-section',
+                component: () =>
+                    import(
+                        /* webpackChunkName: 'course-section' */ '@/views/course/section.vue'
+                    ),
+                props: true
+            },
+            {
+                path: '/course/video',
+                name: 'course-video',
+                component: () =>
+                    import(
+                        /* webpackChunkName: 'course-video' */ '@/views/course/video.vue'
+                    ),
+                props: true
+            },
+            {
                 path: '/advert-space',
                 name: 'advertSpace',
                 component: () =>
