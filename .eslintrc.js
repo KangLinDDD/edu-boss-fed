@@ -27,6 +27,7 @@ module.exports = {
         "indent": [2, 4, { SwitchCase: 1 }],
         "comma-dangle": [2, "never"],
         "@typescript-eslint/no-explicit-any": ["off"],
-        "eol-last": "off"
+        "eol-last": "off",
+        '@typescript-eslint/no-var-requires': 0
     }
 }
