@@ -13,7 +13,7 @@ export const getAliyunVideoUploadAddressAdnAuth = (params: any) => {
         params
     })
 }
-export const getAliyunTransCode = (data: string) => {
+export const getAliyunTransCode = (data: any) => {
     return request({
         method: 'POST',
         url: '/boss/course/upload/aliyunTransCode.json',

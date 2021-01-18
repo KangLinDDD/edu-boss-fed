@@ -27,6 +27,8 @@
                     <el-button type="primary"
                                @click="upload">开始上传</el-button>
                     <el-button @click="back">返回</el-button>
+                    <p v-show="isUploading">视频上传中：{{ uploadPercent }}%</p>
+                    <p v-show="isUploadSuccess">转码状态：{{ isTransCodeSuccess ? '转码完成' : '正在处理，请稍后...' }}</p>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -36,7 +38,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Upload from './components/upload.vue'
-import { getAliyunImagUploadAddressAdnAuth, getAliyunVideoUploadAddressAdnAuth } from '../../services/aliyun-upload'
+import { getAliyunImagUploadAddressAdnAuth, getAliyunVideoUploadAddressAdnAuth, getAliyunTransCode, getAliyunTransCodePercent } from '@/services/aliyun-upload'
 export default Vue.extend({
     name: 'course-video',
     components: {
@@ -51,7 +53,12 @@ export default Vue.extend({
             imageUrl: '',
             courseName: '',
             theme: '',
-            courseId: ''
+            courseId: '',
+            videoId: '',
+            uploadPercent: 0,
+            isUploading: false,
+            isUploadSuccess: false,
+            isTransCodeSuccess: false
         }
     },
     created () {
@@ -80,6 +87,7 @@ export default Vue.extend({
                 onUploadstarted: (uploadInfo: any) => {
                     // 1、通过后端获取文件上传凭证
                     let uploadFn = null
+                    this.isUploading = true
                     if (uploadInfo.isImage) {
                         uploadFn = getAliyunImagUploadAddressAdnAuth
                         // 获取图片上传凭证
@@ -107,14 +115,47 @@ export default Vue.extend({
                 // 文件上传进度，单位：字节
                 onUploadProgress: function (uploadInfo: any, totalSize: any, loadedPercent: any) {
                     console.log('上传进度', uploadInfo, totalSize, loadedPercent)
+                    if (!uploadInfo.isImage) {
+                        this.uploadPercent = Math.floor(loadedPercent * 100)
+                    }
                 },
                 // 上传凭证超时
                 onUploadTokenExpired: function (uploadInfo: any) {
                     console.log('上传超时', uploadInfo)
                 },
                 // 全部文件上传结束
-                onUploadEnd: function (uploadInfo: any) {
-                    console.log('上传结束', uploadInfo)
+                onUploadEnd: (uploadInfo: any) => {
+                    console.log('上传结束', uploadInfo, this.videoFile)
+                    this.isUploadSuccess = true
+                    this.isUploading = false
+                    // 进行转码操作
+                    getAliyunTransCode({
+                        lessonId: this.$route.query.lessonId,
+                        coverImageUrl: this.imageUrl,
+                        fileName: (this.videoFile as any).name,
+                        fileId: this.videoId
+                    }).then((res: any) => {
+                        console.log(res)
+                    })
+                    // 轮询查询转码进度
+                    const timer = setInterval(() => {
+                        getAliyunTransCodePercent(this.$route.query.lessonId.toString()).then((res: any) => {
+                            console.log(res.data.data)
+                            this.uploadPercent = res.data.data
+                            if (res.data.data === 100) {
+                                this.isTransCodeSuccess = true
+                                console.log('转码成功')
+                                clearInterval(timer)
+                                this.$message({
+                                    type: 'success',
+                                    message: '转码成功'
+                                })
+                                setTimeout(() => {
+                                    this.isUploadSuccess = false
+                                }, 2000)
+                            }
+                        })
+                    }, 3000)
                 }
             })
             this.uploader = uploader
@@ -125,6 +166,11 @@ export default Vue.extend({
          * @return {*}
          */
         upload () {
+            // 清空上传状态
+            this.isUploadSuccess = false
+            this.isTransCodeSuccess = false
+            this.uploadPercent = 0
+            this.isUploading = false
             // 获取上传得文件 视频+封面
             const videoFile = (this.videoFile as any).raw
             const imgFile = (this.imgFile as any).raw
@@ -149,8 +195,6 @@ export default Vue.extend({
                 const { data } = res
                 let auth = null
                 if (data.code !== '000000') {
-                    // uploadAddressAndAuth = null
-                    // this.imageUrl = ''
                     this.$message.error('获取凭证失败!')
                     return
                 }
@@ -158,6 +202,8 @@ export default Vue.extend({
                 // 如果是图片则设置imageUrl
                 if (uploadInfo.isImage) {
                     this.imageUrl = data.data.imageURL
+                } else { // 是视频则设置videoId
+                    this.videoId = auth.videoId
                 }
                 ; (this.uploader as any).setUploadAuthAndAddress(
                     uploadInfo,

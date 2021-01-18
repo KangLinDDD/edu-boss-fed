@@ -28,7 +28,7 @@
                         <el-button v-show="data.sectionName"
                                    @click.stop="addLesson(data)"
                                    type="primary">添加课时</el-button>
-                        <el-button @click="uploadVideo(data)" v-show="!data.sectionName">上传视频</el-button>
+                        <el-button @click="uploadVideo(data, node)" v-show="!data.sectionName">上传视频</el-button>
                         <el-select v-model="data.status"
                                    @change="changeStatus(data)"
                                    class="statusSelect">
@@ -152,10 +152,16 @@ export default Vue.extend({
          * @return {*}
          */
         changeStatus (data: any) {
-            saveOrUpdateSection({
-                data,
+            let fn = null
+            if (data.sectionName) {
+                fn = saveOrUpdateSection
+            } else {
+                fn = saveOrUpdate
+            }
+            fn({
                 id: data.id,
-                status: data.status
+                status: data.status + '',
+                data
             }).then((res: any) => {
                 const { data } = res
                 if (data.code === '000000') {
@@ -269,13 +275,15 @@ export default Vue.extend({
          * @param {Object} data 当前行数据
          * @return {*}
          */
-        uploadVideo (data: any) {
+        uploadVideo (data: any, node: any) {
             this.$router.push({
                 name: 'course-video',
                 query: {
                     courseName: this.courseName,
                     theme: data.theme,
-                    courseId: this.courseId.toString()
+                    courseId: this.courseId.toString(),
+                    sectionId: node.parent.id,
+                    lessonId: data.id
                 }
             })
         }
