@@ -4,26 +4,26 @@
         <el-card>
             <div slot="header">
                 <span>分配资源</span>
-                <div class="type"
-                     v-for="category in categories"
-                     :key="category.id">
-                    <el-card class="header">
-                        <div slot="header"
-                             class="clearfix">
-                            <el-checkbox :indeterminate="handlerIndeterminate(category)"
-                                         @change="handlerCheckAll($event, category)"
-                                         v-model="category.checkAll">
-                                {{category.name}}
-                            </el-checkbox>
-                        </div>
-                        <el-checkbox-group v-model="category.childIds">
-                            <el-checkbox v-for="resource in category.child"
-                                         :key="resource.id"
-                                         :label="resource.id">{{resource.name}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-card>
+            </div>
+            <div class="type"
+                 v-for="category in categories"
+                 :key="category.id">
+                <el-card class="header">
+                    <div slot="header"
+                         class="clearfix">
+                        <el-checkbox :indeterminate="handlerIndeterminate(category)"
+                                     @change="handlerCheckAll($event, category)"
+                                     v-model="category.checkAll">
+                            {{category.name}}
+                        </el-checkbox>
+                    </div>
+                    <el-checkbox-group v-model="category.childIds">
+                        <el-checkbox v-for="resource in category.child"
+                                     :key="resource.id"
+                                     :label="resource.id">{{resource.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-card>
 
-                </div>
             </div>
             <div class="ops">
                 <el-button @click="resetChecked">清空</el-button>
@@ -199,6 +199,9 @@ export default Vue.extend({
 .alloc-resource {
     .ops {
         text-align: right;
+    }
+    ::v-deep .type {
+        padding: 10px 0;
     }
 }
 </style>
