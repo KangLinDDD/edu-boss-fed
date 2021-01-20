@@ -12,6 +12,11 @@ const routes: Array<RouteConfig> = [
             import(/* webpackChunkName: 'login' */ '@/views/login/index.vue')
     },
     {
+        path: '/test-ref',
+        name: 'test-ref',
+        component: () => import(/* webpackChunkName: 'test-ref' */ '@/views/test-ref/index.vue')
+    },
+    {
         path: '*',
         name: '404',
         component: () =>
@@ -146,11 +151,6 @@ const routes: Array<RouteConfig> = [
                     import(
                         /* webpackChunkName: 'menu-create-edit' */ '@/views/menu/create.vue'
                     )
-            },
-            {
-                path: '/menu/:id/edit',
-                name: 'menu-edit',
-                component: () => import(/* webpackChunkName: 'menu-create-edit' */ '@/views/menu/edit.vue')
             }
         ]
     }
