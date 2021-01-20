@@ -163,7 +163,10 @@ export default Vue.extend({
          * @return {*}
          */
         resetChecked () {
-            (this.$refs.menuTree as Tree).setCheckedKeys([])
+            this.categories.forEach((category: any) => {
+                category.checkAll = false
+                category.childIds = []
+            })
         },
         /**
          * @description 判断当前类别下是否全部选中
