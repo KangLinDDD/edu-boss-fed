@@ -3,7 +3,7 @@
         {
             "name": "EduBossFed",
             "script": "npm",
-            "args": "serve"
+            "args": "preview"
         }
     ]
 }
