@@ -58,4 +58,4 @@ jobs:
           rm -rf dist
           wget https://github.com/KangLinDDD/edu-boss-fed/releases/latest/download/release.tgz -O release.tgz
           tar zxvf release.tgz
-          cp -rf /root/edu-boss-fed/dist/* /usr/local/nginx/html/
+          cp -rf /root/edu-boss-fed/dist/* /usr/local/nginx/html
