@@ -53,7 +53,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          rm -rf /usr/local/nginx/html*
+          rm -rf /usr/local/nginx/html/*
           cd /root/edu-boss-fed
           rm -rf dist
           wget https://github.com/KangLinDDD/edu-boss-fed/releases/latest/download/release.tgz -O release.tgz
