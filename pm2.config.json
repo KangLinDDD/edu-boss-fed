@@ -1,9 +1,0 @@
-{
-    "apps": [
-        {
-            "name": "EduBossFed",
-            "script": "npm",
-            "args": "preview"
-        }
-    ]
-}
